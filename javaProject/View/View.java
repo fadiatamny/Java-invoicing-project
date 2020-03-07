@@ -5,7 +5,8 @@ import Model.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-
+import java.sql.Date;
+import java.util.Calendar;
 import java.util.List;
 
 public class View implements IView {
@@ -45,8 +46,27 @@ public class View implements IView {
     }
 
     public void showAddInvoice(){
-        this.frame = new JFrame();
-        this.centerPanel = 
+        JFrame newFrame = new JFrame();
+        JPanel newPanel = new JPanel();
+        JButton btn = new JButton("add");
+        User s = (User)this.data;
+        JTextField t1 , t2;
+        t1 = new JTextField("please enter description of invoice:");
+        t2 = new JTextField("please enter amount of invoice:");
+        newPanel.add(t1);
+        newPanel.add(t2);
+        newPanel.add(btn);
+        newFrame.add(newFrame, BorderLayout.CENTER);
+        btn.addActionListener(new ActionListener()
+        {
+            public void actionPerformed(ActionEvent e) {
+                c.insertInvoice(s.getID(), Double.parseDouble(t2.getText()), t1.getText(),new Date(Calendar.getInstance().getTimeInMillis()));
+            }
+        });
+       
+
+
+        
     }
     
     public void showMenu() {

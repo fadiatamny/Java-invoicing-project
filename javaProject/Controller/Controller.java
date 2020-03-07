@@ -75,9 +75,11 @@ public class Controller implements IController {
         HttpClient client;
         HttpRequest request;
         HttpResponse<String> response;
+        SimpleDateFormat f = new SimpleDateFormat("YYYY-MM-DD");
+
         try {
             Json x = Json.object().set("amount", amount).set("description", description).set("UserID", userID)
-                    .set("date", date);
+                    .set("date", f.format(date));
 
             client = HttpClient.newHttpClient();
             request = HttpRequest.newBuilder()
