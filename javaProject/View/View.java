@@ -46,6 +46,7 @@ public class View implements IView {
     }
 
     public void showAddInvoice(){
+  
         JFrame newFrame = new JFrame();
         JPanel newPanel = new JPanel();
         JButton btn = new JButton("add");
@@ -56,25 +57,25 @@ public class View implements IView {
         newPanel.add(t1);
         newPanel.add(t2);
         newPanel.add(btn);
-        newFrame.add(newFrame, BorderLayout.CENTER);
+        newFrame.add(newPanel, BorderLayout.CENTER);
+        newFrame.setVisible(true);
         btn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) {
                 c.insertInvoice(s.getID(), Double.parseDouble(t2.getText()), t1.getText(),new Date(Calendar.getInstance().getTimeInMillis()));
+                newFrame.setVisible(false);
             }
         });
        
-
-
-        
     }
     
     public void showMenu() {
-        this.frame.removeAll();
+      //  this.frame.removeAll();
 
         this.menuFrame = new JFrame("Simple GUI application");
         // east pannel
-        label = new JLabel(String.format("Welcome %s:", ((User) this.data).getName()));
+       // label = new JLabel(String.format("Welcome %s:", ((User) this.data).getName()));
+        label = new JLabel("welcome Eilon");
         WestPanel = new JPanel();
         addInvoice = new JButton("Add invoice");
         deleteInvoice = new JButton("Delete invoice");
@@ -84,15 +85,25 @@ public class View implements IView {
         WestPanel.add(label);
         WestPanel.add(new JLabel(""));
         WestPanel.add(addInvoice);
+        WestPanel.add(deleteInvoice);
         WestPanel.add(new JLabel(""));
         WestPanel.add(new JLabel(""));
         menuFrame.add(WestPanel, "West");
+        this.addInvoice.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+               showAddInvoice();
+            }
+        });
+
 
         // center pannel
         centerPanel = new JPanel();
         centerPanel.setLayout(new GridLayout(30, 30));
-        label1 = new JLabel(String.format("Budget:\t%s", ((User) this.data).getBudget()));
-        label2 = new JLabel(String.format("Current:\t%s", ((User) this.data).getCurrent()));
+      //  label1 = new JLabel(String.format("Budget:\t%s", ((User) this.data).getBudget()));
+        label1 = new JLabel("budjet: ");
+       // label2 = new JLabel(String.format("Current:\t%s", ((User) this.data).getCurrent()));
+        label2 = new JLabel("Current: ");
         menuFrame.add(centerPanel, BorderLayout.CENTER);
         // west scroll bar
         s = new JScrollBar();
@@ -166,7 +177,7 @@ public class View implements IView {
 
     public static void main(String args[]) {
         View simpleGUI = new View();
-        simpleGUI.initialize();
+        simpleGUI.showMenu();
     }
 
 }
