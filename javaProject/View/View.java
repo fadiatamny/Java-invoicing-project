@@ -12,6 +12,7 @@ public class View implements IView {
 
     private JButton addInvoice, deleteInvoice, button;
     private JFrame frame;
+    private JFrame menuFrame;
     private JPanel WestPanel, centerPanel, northPanel;
     private JLabel label, label1, label2;
     private JScrollBar s;
@@ -44,26 +45,14 @@ public class View implements IView {
     }
 
     public void showAddInvoice(){
-        this.button = new JButton("Connect");
-        this.button.setSize(300, 200);
-        
-        this.centerPanel.add(this.button);
-        frame.add(centerPanel, BorderLayout.CENTER);
-        
-        this.button.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                this.frame.setVisible(false);
-                c.insertInvoice(userID, amount, description, date);
-                loadList(l);
-            }
-        });
+        this.frame = new JFrame();
+        this.centerPanel = 
     }
-
+    
     public void showMenu() {
         this.frame.removeAll();
 
-        JFrame menuFrame = new JFrame("Simple GUI application");
+        this.menuFrame = new JFrame("Simple GUI application");
         // east pannel
         label = new JLabel(String.format("Welcome %s:", ((User) this.data).getName()));
         WestPanel = new JPanel();
