@@ -1,29 +1,28 @@
 package View;
+
 import Controller.*;
 import Model.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.lang.reflect.Constructor;
 
 import java.util.List;
 
-public class View implements IView
-{
+public class View implements IView {
 
-    private JButton btONE, btTWO, btTHREE ,btFour , btFive , btSix;
+    private JButton addInvoice, deleteInvoice, button;
     private JFrame frame;
-    private JPanel WestPanel , centerPanel , northPanel;
-    private JLabel label, label1 , label2;
+    private JPanel WestPanel, centerPanel, northPanel;
+    private JLabel label, label1, label2;
     private JScrollBar s;
     private IModel data;
     private IController c;
 
-    public View (){
+    public View() {
         this.c = new Controller();
     }
 
-    private void loadList(List<Invoice> l){
+    private void loadList(List<Invoice> l) {
 
         this.centerPanel.removeAll();
 
@@ -35,8 +34,8 @@ public class View implements IView
         this.centerPanel.add(new JLabel(""));
         this.centerPanel.add(new JLabel(""));
 
-        for(Invoice v : l){
-            this.centerPanel.add(new JButton(v.getAmount()+ " " + v.getDescription()));
+        for (Invoice v : l) {
+            this.centerPanel.add(new JButton(v.getAmount() + " " + v.getDescription()));
             this.centerPanel.add(new JLabel(""));
         }
 
@@ -44,59 +43,97 @@ public class View implements IView
         this.centerPanel.repaint();
     }
 
-    @Override
-    public void initialize(String id)
-    {  
-        System.out.println(id);
-        this.data = this.c.getUserDetails(id);
+    public void showAddInvoice(){
+        this.button = new JButton("Connect");
+        this.button.setSize(300, 200);
+        
+        this.centerPanel.add(this.button);
+        frame.add(centerPanel, BorderLayout.CENTER);
+        
+        this.button.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                this.frame.setVisible(false);
+                c.insertInvoice(userID, amount, description, date);
+                loadList(l);
+            }
+        });
+    }
 
-        // frame
-        frame =  new JFrame("Simple GUI application");
+    public void showMenu() {
+        this.frame.removeAll();
+
+        JFrame menuFrame = new JFrame("Simple GUI application");
         // east pannel
-        label = new JLabel("Welcome Eilon:");
+        label = new JLabel(String.format("Welcome %s:", ((User) this.data).getName()));
         WestPanel = new JPanel();
-        btONE = new JButton("Add invoice");
-        btTWO = new JButton("Delete invoice");
-        btTHREE = new JButton("Set new limit");
-        btONE.setSize(300,200);
-        btTWO.setSize(300,200);
-        btTHREE.setSize(300,200);
+        addInvoice = new JButton("Add invoice");
+        deleteInvoice = new JButton("Delete invoice");
+        addInvoice.setSize(300, 200);
+        deleteInvoice.setSize(300, 200);
         WestPanel.setLayout(new GridLayout(12, 1));
         WestPanel.add(label);
         WestPanel.add(new JLabel(""));
-        WestPanel.add(btONE);
+        WestPanel.add(addInvoice);
         WestPanel.add(new JLabel(""));
         WestPanel.add(new JLabel(""));
-        WestPanel.add(btTWO);
-        WestPanel.add(new JLabel(""));
-        WestPanel.add(new JLabel(""));
-        WestPanel.add(btTHREE);
-        frame.add(WestPanel,"West");
+        menuFrame.add(WestPanel, "West");
 
         // center pannel
         centerPanel = new JPanel();
         centerPanel.setLayout(new GridLayout(30, 30));
-        label1 = new JLabel(String.format("Budget:\t%s", ((User)this.data).getBudget()));
-        label2 = new JLabel(String.format("Current:\t%s", ((User)this.data).getCurrent()));
-        frame.add(centerPanel,BorderLayout.CENTER);
-        //west scroll bar
-        s=new JScrollBar();
-        s.setBounds(100,100, 50,100);
-        frame.add(s,"East");
+        label1 = new JLabel(String.format("Budget:\t%s", ((User) this.data).getBudget()));
+        label2 = new JLabel(String.format("Current:\t%s", ((User) this.data).getCurrent()));
+        menuFrame.add(centerPanel, BorderLayout.CENTER);
+        // west scroll bar
+        s = new JScrollBar();
+        s.setBounds(100, 100, 50, 100);
+        menuFrame.add(s, "East");
 
-        //north pannel
+        // north pannel
         northPanel = new JPanel();
         northPanel.add(label1);
         northPanel.add(label2);
-        frame.add(northPanel,"North");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(400,400);
-        frame.setVisible(true);
-        this.loadList(((User)this.data).getInvoices());
+        menuFrame.add(northPanel, "North");
+        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuFrame.setSize(400, 400);
+        menuFrame.setVisible(true);
+        this.loadList(((User) this.data).getInvoices());
+    }
 
-        //update;
-        // label1.setText("new text");
-        // label1.paintImmediately(label1.getVisibleRect());
+    @Override
+    public void initialize(){
+      JTextField t1 , t2;
+      
+      frame = new JFrame("Simple GUI application");
+      t1 = new JTextField("please enter id");
+      t2 = new JTextField("please enter password");
+      this.centerPanel = new JPanel();
+      this.centerPanel.setLayout(new GridLayout(3,1));
+      t1.setSize(300, 200);
+      t2.setSize(300, 200);
+      this.centerPanel.add(t1);
+      this.centerPanel.add(t2);
+      this.button = new JButton("Connect");
+      this.button.setSize(300, 200);
+      this.centerPanel.add(this.button);
+      frame.add(centerPanel, BorderLayout.CENTER);
+      
+      this.button.addActionListener(new ActionListener(){
+          @Override
+          public void actionPerformed(ActionEvent e) {
+              login(t1.getText(),t2.getText());
+          }
+      });
+      frame.setSize(400, 400);
+      frame.setVisible(true);
+    }
+
+    public void login(String id, String password){
+        this.data = this.c.getUserDetails(id,password);
+        if (this.data != null) {
+            showMenu();
+        }
     }
 
     @Override
@@ -104,7 +141,7 @@ public class View implements IView
         // Object source = actionEvent.getSource();
         // if(source == btONE) // if add invoice pressed
         // { centerPanel.add(btFour);
-        //     centerPanel.add(new JLabel(""));
+        // centerPanel.add(new JLabel(""));
         // }
     }
 
@@ -118,10 +155,9 @@ public class View implements IView
 
     }
 
-    public static void main(String args[])
-    {
+    public static void main(String args[]) {
         View simpleGUI = new View();
-        simpleGUI.initialize("THISISAFUCKINGSTRING1");
+        simpleGUI.initialize();
     }
 
 }

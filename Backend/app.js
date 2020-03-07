@@ -2,6 +2,7 @@ const express = require("express");
 const morgan = require('morgan');
 const chalk = require('chalk');
 const apiRouter = require('./Router/apiRouter');
+const invoiceRouter = require('./Router/invoiceRouter');
 
 const app = express();
 
@@ -23,6 +24,7 @@ const morganMiddleware = morgan(function (tokens, req, res) {
 app.use(morganMiddleware);
 
 app.use('/api',apiRouter);
+app.use('/invoice',invoiceRouter);
 
 app.all('*', (req, res) => {
     res.status(404).send('Page Not Found!');

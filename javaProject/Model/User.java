@@ -18,11 +18,14 @@ public class User implements IModel {
         this._password = password;
         this._budget = budget;
         this._invoices = new ArrayList<>();
-        this._invoices.add(new Invoice(0,12.0,"tets",new Date()));
     }
 
     public String getName() {
         return this._name;
+    }
+
+    public String getID(){
+        return this._id;
     }
 
     public void setName(String name) {
@@ -49,7 +52,10 @@ public class User implements IModel {
         return this._invoices.get(i);
     }
 
-    
+    public void insertInvoice(Invoice v){
+        this._invoices.add(v);
+    }
+
     public List<Invoice> getInvoices() {
         return this._invoices;
     }

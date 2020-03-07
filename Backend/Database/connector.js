@@ -1,7 +1,7 @@
 const sqlite = require('sqlite3');
 
 class Connector {
-    constructor(fileName = process.env.SQLITE_FILE || "./database/database.sqlite") {
+    constructor(fileName = process.env.SQLITE_FILE || "./database.sqlite") {
         this.db = new sqlite.Database(fileName, (err) => {
             if (err) {
                 throw {
@@ -21,7 +21,9 @@ class Connector {
         this.db.run(
             "CREATE TABLE IF NOT EXISTS `Users` (\
             `id` varchar(64) UNIQUE PRIMARY KEY,\
-            `password` varchar(256)\
+            `name` varchar(256),\
+            `password` varchar(256),\
+            `budget` INTEGER\
             )"
         );
         this.db.run(

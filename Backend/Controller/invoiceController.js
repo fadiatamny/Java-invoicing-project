@@ -19,8 +19,14 @@ class InvoiceController {
     static async read(req, res) {
         try {
             const query = `SELECT * FROM Invoice AND id = ?;`;
-            const data = await con.query(query, [req.params.id]);
-            res.status(200).json(JSON.stringify(data));
+            const data = await con.getData(query, [req.params.id]);
+            if (data.errno) {
+                throw {
+                    'status': 500,
+                    'message': 'Error performing query',
+                };
+            }
+            res.status(200).send(data);
         } catch (err) {
             ErrHandler.handle(res, err);
         }
@@ -29,8 +35,30 @@ class InvoiceController {
     static async readAll(req, res) {
         try {
             const query = `SELECT * FROM Invoice WHERE UserID = ?;`;
-            const data = await con.query(query, [req.params.UserID]);
-            res.status(200).json(JSON.stringify(data));
+            const data = await con.getData(query, [req.params.UserID]);
+            if (data.errno) {
+                throw {
+                    'status': 500,
+                    'message': 'Error performing query',
+                };
+            }
+            res.status(200).send(data);
+        } catch (err) {
+            ErrHandler.handle(res, err);
+        }
+    };
+
+    static async selectstar(req, res) {
+        try {
+            const query = `SELECT * FROM Invoice;`;
+            const data = await con.getData(query);
+            if (data.errno) {
+                throw {
+                    'status': 500,
+                    'message': 'Error performing query',
+                };
+            }
+            res.status(200).send(data);
         } catch (err) {
             ErrHandler.handle(res, err);
         }
