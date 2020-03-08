@@ -74,16 +74,75 @@ public class View implements IView {
         newPanel.add(t2);
         newPanel.add(btn);
         newFrame.add(newPanel, BorderLayout.CENTER);
+        newFrame.setSize(320, 160);
         newFrame.setVisible(true);
         btn.addActionListener(new ActionListener()
         {
             public void actionPerformed(ActionEvent e) {
-                c.insertInvoice(s.getID(), Double.parseDouble(t2.getText()), t1.getText(),new Date(Calendar.getInstance().getTimeInMillis()));
+             //   c.insertInvoice(s.getID(), Double.parseDouble(t2.getText()), t1.getText(),new Date(Calendar.getInstance().getTimeInMillis()));
                 newFrame.setVisible(false);
+                refreshMenu(t1.getText(),t2.getText());
             }
         });
        
     }
+
+
+    public void refreshMenu(String description, String amount) {
+         // this.frame.removeAll();
+          JLabel newDescription = new JLabel(description);
+          JLabel newAmount = new JLabel(amount);
+          this.menuFrame = new JFrame("Simple GUI application");
+          // east pannel
+         // label = new JLabel(String.format("Welcome %s:", ((User) this.data).getName()));
+          label = new JLabel("welcome Eilon");
+          WestPanel = new JPanel();
+          addInvoice = new JButton("Add invoice");
+          deleteInvoice = new JButton("Delete invoice");
+          addInvoice.setSize(300, 200);
+          deleteInvoice.setSize(300, 200);
+          WestPanel.setLayout(new GridLayout(12, 1));
+          WestPanel.add(label);
+          WestPanel.add(new JLabel(""));
+          WestPanel.add(addInvoice);
+          WestPanel.add(deleteInvoice);
+          WestPanel.add(new JLabel(""));
+          WestPanel.add(new JLabel(""));
+          menuFrame.add(WestPanel, "West");
+          this.addInvoice.addActionListener(new ActionListener(){
+              @Override
+              public void actionPerformed(ActionEvent e) {
+                showAddInvoice();
+              }
+          });
+  
+  
+          // center pannel
+          centerPanel = new JPanel();
+          centerPanel.add(newDescription);
+          centerPanel.add(newAmount);
+          centerPanel.setLayout(new GridLayout(30, 30));
+        //  label1 = new JLabel(String.format("Budget:\t%s", ((User) this.data).getBudget()));
+          label1 = new JLabel("budjet: ");
+         // label2 = new JLabel(String.format("Current:\t%s", ((User) this.data).getCurrent()));
+          label2 = new JLabel("Current: ");
+          menuFrame.add(centerPanel, BorderLayout.CENTER);
+          // west scroll bar
+          s = new JScrollBar();
+          s.setBounds(100, 100, 50, 100);
+          menuFrame.add(s, "East");
+  
+          // north pannel
+          northPanel = new JPanel();
+          northPanel.add(label1);
+          northPanel.add(label2);
+          menuFrame.add(northPanel, "North");
+          menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+          menuFrame.setSize(400, 400);
+          menuFrame.setVisible(true);
+          this.loadList(((User) this.data).getInvoices());
+      }
+
     
     public void showMenu() {
       //  this.frame.removeAll();
@@ -108,7 +167,7 @@ public class View implements IView {
         this.addInvoice.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-               showAddInvoice();
+                showAddInvoice();
             }
         });
 
@@ -140,33 +199,33 @@ public class View implements IView {
 
     @Override
     public void initialize(){
-      JTextField t1 , t2;
-      
-      frame = new JFrame("Simple GUI application");
-      t1 = new JTextField();
-      t2 = new JTextField();
-      this.centerPanel = new JPanel();
-      this.centerPanel.setLayout(new GridLayout(5,1));
-      t1.setSize(300, 200);
-      t2.setSize(300, 200);
-      JLabel lb1 = new JLabel("please enter id:");
-      JLabel lb2 = new JLabel("please enter password:");
-      this.centerPanel.add(lb1);
-      this.centerPanel.add(t1);
-      this.centerPanel.add(lb2);
-      this.centerPanel.add(t2);
-      this.button = new JButton("Connect");
-      this.button.setSize(300, 200);
-      this.centerPanel.add(this.button);
-      frame.add(centerPanel, BorderLayout.CENTER);
-      
-      this.button.addActionListener(new ActionListener(){
+        JFrame frame = new JFrame("Login");
+        frame.setSize(350, 200);
+        JPanel panel = new JPanel();
+        panel.setLayout(null);
+        JLabel userLabel = new JLabel("User");
+        userLabel.setBounds(10,20,80,25);
+        panel.add(userLabel);
+        JTextField userText = new JTextField(20);
+        userText.setBounds(100,20,165,25);
+        panel.add(userText);
+        JLabel passwordLabel = new JLabel("Password");
+        passwordLabel.setBounds(10,50,80,25);
+        panel.add(passwordLabel);
+        JTextField passwordText = new JTextField(20);
+        passwordText.setBounds(100,50,165,25);
+        panel.add(passwordText);
+        JButton loginButton = new JButton("login");
+        loginButton.setBounds(10, 80, 80, 25);
+        panel.add(loginButton);
+        loginButton.addActionListener(new ActionListener(){
           @Override
           public void actionPerformed(ActionEvent e) {
-              login(t1.getText(),t2.getText());
+              login(userText.getText(),passwordText.getText());
+             
           }
       });
-      frame.setSize(400, 400);
+      frame.add(panel);
       frame.setVisible(true);
     }
 
