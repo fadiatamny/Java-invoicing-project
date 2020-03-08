@@ -8,193 +8,164 @@ import java.awt.event.*;
 import java.sql.Date;
 import java.util.Calendar;
 import java.util.List;
+import javax.swing.table.DefaultTableModel;
 
 public class View implements IView {
 
-    private JButton addInvoice, deleteInvoice, button;
-    private JFrame frame;
+    
     private JFrame menuFrame;
-    private JPanel WestPanel, centerPanel, northPanel;
-    private JLabel label, label1, label2;
-    private JScrollBar s;
     private IModel data;
     private IController c;
+    private JTable table;
 
     public View() {
         this.c = new Controller();
     }
 
     private void loadList(List<Invoice> l) {
-
-        this.centerPanel.removeAll();
-
-        this.centerPanel.add(new JLabel(""));
-        this.centerPanel.add(new JLabel(""));
-        this.centerPanel.add(new JLabel(""));
-        this.centerPanel.add(new JLabel(""));
-        this.centerPanel.add(new JLabel(""));
-        this.centerPanel.add(new JLabel(""));
-        this.centerPanel.add(new JLabel(""));
-        System.out.println(l.size());
+        Object[] row = new Object[4];
+        DefaultTableModel model = new DefaultTableModel();
+        Object[] columns = {"ID","Amount","Description","Date"};
+        model.setColumnIdentifiers(columns);
 
         for (Invoice v : l) {
-            JButton b = new JButton(v.getAmount() + " " + v.getDescription());
-            b.addActionListener(new ActionListener()
-            {
-                public Invoice in = v;
-                public void actionPerformed(ActionEvent e) {
-                    showInvoiceDetails(in);
-                }
-            });
+            row[0] = v.getID();
+            row[1] = v.getAmount();
+            row[2] = v.getDescription();
+            row[3] = v.getDate();
 
-            this.centerPanel.add(b);
-            this.centerPanel.add(new JLabel(""));
+            model.addRow(row);
         }
-        System.out.println("here");
 
-
-        this.centerPanel.revalidate();
-        this.centerPanel.repaint();
+        this.table.setModel(model);
     }
-
-    private void showInvoiceDetails(Invoice i){
-        //show a menu with delete or add that can allow us to add delete or update options.
-    }
-
-    public void showAddInvoice(){
-  
-        JFrame newFrame = new JFrame();
-        JPanel newPanel = new JPanel();
-        JButton btn = new JButton("add");
-        User s = (User)this.data;
-        JTextField t1 , t2;
-        t1 = new JTextField("please enter description of invoice:");
-        t2 = new JTextField("please enter amount of invoice:");
-        newPanel.add(t1);
-        newPanel.add(t2);
-        newPanel.add(btn);
-        newFrame.add(newPanel, BorderLayout.CENTER);
-        newFrame.setSize(320, 160);
-        newFrame.setVisible(true);
-        btn.addActionListener(new ActionListener()
-        {
-            public void actionPerformed(ActionEvent e) {
-             //   c.insertInvoice(s.getID(), Double.parseDouble(t2.getText()), t1.getText(),new Date(Calendar.getInstance().getTimeInMillis()));
-                newFrame.setVisible(false);
-                refreshMenu(t1.getText(),t2.getText());
-            }
-        });
-       
-    }
-
-
-    public void refreshMenu(String description, String amount) {
-         // this.frame.removeAll();
-          JLabel newDescription = new JLabel(description);
-          JLabel newAmount = new JLabel(amount);
-          this.menuFrame = new JFrame("Simple GUI application");
-          // east pannel
-         // label = new JLabel(String.format("Welcome %s:", ((User) this.data).getName()));
-          label = new JLabel("welcome Eilon");
-          WestPanel = new JPanel();
-          addInvoice = new JButton("Add invoice");
-          deleteInvoice = new JButton("Delete invoice");
-          addInvoice.setSize(300, 200);
-          deleteInvoice.setSize(300, 200);
-          WestPanel.setLayout(new GridLayout(12, 1));
-          WestPanel.add(label);
-          WestPanel.add(new JLabel(""));
-          WestPanel.add(addInvoice);
-          WestPanel.add(deleteInvoice);
-          WestPanel.add(new JLabel(""));
-          WestPanel.add(new JLabel(""));
-          menuFrame.add(WestPanel, "West");
-          this.addInvoice.addActionListener(new ActionListener(){
-              @Override
-              public void actionPerformed(ActionEvent e) {
-                showAddInvoice();
-              }
-          });
-  
-  
-          // center pannel
-          centerPanel = new JPanel();
-          centerPanel.add(newDescription);
-          centerPanel.add(newAmount);
-          centerPanel.setLayout(new GridLayout(30, 30));
-        //  label1 = new JLabel(String.format("Budget:\t%s", ((User) this.data).getBudget()));
-          label1 = new JLabel("budjet: ");
-         // label2 = new JLabel(String.format("Current:\t%s", ((User) this.data).getCurrent()));
-          label2 = new JLabel("Current: ");
-          menuFrame.add(centerPanel, BorderLayout.CENTER);
-          // west scroll bar
-          s = new JScrollBar();
-          s.setBounds(100, 100, 50, 100);
-          menuFrame.add(s, "East");
-  
-          // north pannel
-          northPanel = new JPanel();
-          northPanel.add(label1);
-          northPanel.add(label2);
-          menuFrame.add(northPanel, "North");
-          menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-          menuFrame.setSize(400, 400);
-          menuFrame.setVisible(true);
-          this.loadList(((User) this.data).getInvoices());
-      }
-
     
     public void showMenu() {
-      //  this.frame.removeAll();
-
+        
         this.menuFrame = new JFrame("Simple GUI application");
-        // east pannel
-        label = new JLabel(String.format("Welcome %s:", ((User) this.data).getName()));
-        //label = new JLabel("welcome Eilon");
-        WestPanel = new JPanel();
-        addInvoice = new JButton("Add invoice");
-        deleteInvoice = new JButton("Delete invoice");
-        addInvoice.setSize(300, 200);
-        deleteInvoice.setSize(300, 200);
-        WestPanel.setLayout(new GridLayout(12, 1));
-        WestPanel.add(label);
-        WestPanel.add(new JLabel(""));
-        WestPanel.add(addInvoice);
-        WestPanel.add(deleteInvoice);
-        WestPanel.add(new JLabel(""));
-        WestPanel.add(new JLabel(""));
-        menuFrame.add(WestPanel, "West");
-        this.addInvoice.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                showAddInvoice();
-            }
-        });
+        this.table = new JTable(); 
 
-
-        // center pannel
-        centerPanel = new JPanel();
-        centerPanel.setLayout(new GridLayout(30, 30));
-      //  label1 = new JLabel(String.format("Budget:\t%s", ((User) this.data).getBudget()));
-        label1 = new JLabel("budjet: ");
-       // label2 = new JLabel(String.format("Current:\t%s", ((User) this.data).getCurrent()));
-        label2 = new JLabel("Current: ");
-        menuFrame.add(centerPanel, BorderLayout.CENTER);
-        // west scroll bar
-        s = new JScrollBar();
-        s.setBounds(100, 100, 50, 100);
-        menuFrame.add(s, "East");
-
-        // north pannel
-        northPanel = new JPanel();
-        northPanel.add(label1);
-        northPanel.add(label2);
-        menuFrame.add(northPanel, "North");
-        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        menuFrame.setSize(400, 400);
-        menuFrame.setVisible(true);
         c.getInvoices((User)this.data);
         this.loadList(((User) this.data).getInvoices());
+        
+        // Change A JTable Background Color, Font Size, Font Color, Row Height
+        this.table.setBackground(Color.LIGHT_GRAY);
+        this.table.setForeground(Color.black);
+        Font font = new Font("",1,22);
+        this.table.setFont(font);
+        this.table.setRowHeight(30);
+        
+        // create JTextFields
+        JTextField textId = new JTextField();
+        JTextField textFname = new JTextField();
+        
+        // create labels
+        JLabel current = new JLabel("Current:");
+        current.setBounds(150, 220, 100, 25);  
+        JLabel budget = new JLabel("Budget:");
+        budget.setBounds(50,100, 100,30);  
+        
+        // create JButtons
+        JButton btnAdd = new JButton("Add");
+        JButton btnDelete = new JButton("Delete");
+        JButton btnUpdate = new JButton("Update");     
+
+        // set sizes to the textfields
+        
+        textId.setBounds(20, 220, 100, 25);
+        textFname.setBounds(20, 250, 100, 25); 
+        current.setBounds(150, 220, 100, 25);  
+        btnAdd.setBounds(150, 220, 100, 25);
+        btnUpdate.setBounds(150, 265, 100, 25);
+        btnDelete.setBounds(150, 310, 100, 25);
+        
+        // create JScrollPane
+        JScrollPane pane = new JScrollPane(this.table);
+        pane.setBounds(0, 0, 880, 200);
+        menuFrame.setLayout(null);
+        menuFrame.add(pane);
+        
+        // add JTextFields to the jframe
+        menuFrame.add(textId);
+        menuFrame.add(textFname);
+        
+    
+        // add JButtons to the jframe
+        menuFrame.add(btnAdd);
+        menuFrame.add(btnDelete);
+        menuFrame.add(btnUpdate);
+
+        // create an array of objects to set the row data
+        Object[] row = new Object[2];
+        
+        
+        btnAdd.addActionListener(new ActionListener(){ //button add row , add row to the this.table
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                row[0] = textId.getText();
+                row[1] = textFname.getText();
+                DefaultTableModel t = (DefaultTableModel)table.getModel();
+                t.addRow(row);
+            }
+        });
+        
+        
+        btnDelete.addActionListener(new ActionListener(){    // button remove row
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+            
+                // i = the index of the selected row
+                int i = table.getSelectedRow();
+                if(i >= 0){
+                    // remove a row from jtable
+                    DefaultTableModel t = (DefaultTableModel)table.getModel();
+                    t.removeRow(i);
+                }
+                else{
+                    System.out.println("Delete Error");
+                }
+            }
+        });
+        
+            
+        this.table.addMouseListener(new MouseAdapter(){ // get selected row data From this.table to textfields
+        
+        @Override
+        public void mouseClicked(MouseEvent e){
+            
+            // i = the index of the selected row
+            int i = table.getSelectedRow();
+            textId.setText(table.getModel().getValueAt(i, 0).toString());
+            textFname.setText(table.getModel().getValueAt(i, 1).toString());
+            
+        }
+        });
+                
+        btnUpdate.addActionListener(new ActionListener(){   // button update row
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+                // i = the index of the selected row
+                int i = table.getSelectedRow();
+                
+                if(i >= 0) 
+                {
+                    table.getModel().setValueAt(textId.getText(), i, 0);
+                    table.getModel().setValueAt(textFname.getText(), i, 1);
+                }
+                else{
+                    System.out.println("Update Error");
+                }
+            }
+        });
+        
+        menuFrame.setSize(890,400);
+        menuFrame.setLocationRelativeTo(null);
+        menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        menuFrame.setVisible(true);
     }
 
     @Override
@@ -221,8 +192,7 @@ public class View implements IView {
         loginButton.addActionListener(new ActionListener(){
           @Override
           public void actionPerformed(ActionEvent e) {
-              login(userText.getText(),passwordText.getText());
-             
+              login(userText.getText(),passwordText.getText()); 
           }
       });
       frame.add(panel);
@@ -238,11 +208,7 @@ public class View implements IView {
 
     @Override
     public void update(User obj, ActionEvent actionEvent) {
-        // Object source = actionEvent.getSource();
-        // if(source == btONE) // if add invoice pressed
-        // { centerPanel.add(btFour);
-        // centerPanel.add(new JLabel(""));
-        // }
+
     }
 
     @Override
@@ -256,6 +222,7 @@ public class View implements IView {
     }
 
     public static void main(String args[]) {
+
         View simpleGUI = new View();
         simpleGUI.initialize();
     }

@@ -105,7 +105,7 @@ public class Controller implements IController {
 
             client = HttpClient.newHttpClient();
             request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://invoicing-java-backend.herokuapp.com/invoice/update/"+id)
+                    .uri(URI.create("https://invoicing-java-backend.herokuapp.com/invoice/update/"+id))
                     .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(x.toString())).build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
@@ -123,7 +123,7 @@ public class Controller implements IController {
         try {
             client = HttpClient.newHttpClient();
             request = HttpRequest.newBuilder()
-                    .uri(URI.create("https://invoicing-java-backend.herokuapp.com/invoice/delete/"+id)
+                    .uri(URI.create("https://invoicing-java-backend.herokuapp.com/invoice/delete/"+id))
                     .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.noBody()).build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
