@@ -1,4 +1,4 @@
-const con = new(require('../Database/connector'))();
+const con = require('../Database/connector');
 const ErrHandler = require('../Utills/errorHandler');
 
 class LoginController {
@@ -15,7 +15,7 @@ class LoginController {
     static async login(req, res) {
         try {
             let query = `SELECT * FROM Users WHERE Users.id = ?;`;
-            let result = await con.getData(query, [req.body.id]);
+            let result = await con.query(query, [req.body.id]);
             if (result.length == 0) throw {
                 status: 409,
                 message: 'User doesnt exist'

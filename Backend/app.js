@@ -1,9 +1,10 @@
+const dotenv = require('dotenv').config();
 const express = require("express");
 const morgan = require('morgan');
 const chalk = require('chalk');
 const apiRouter = require('./Router/apiRouter');
 const invoiceRouter = require('./Router/invoiceRouter');
-
+const con = require('./Database/connector').initiate();
 const app = express();
 
 app.use(express.json());

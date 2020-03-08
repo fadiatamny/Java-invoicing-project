@@ -35,14 +35,30 @@ public class View implements IView {
         this.centerPanel.add(new JLabel(""));
         this.centerPanel.add(new JLabel(""));
         this.centerPanel.add(new JLabel(""));
+        System.out.println(l.size());
 
         for (Invoice v : l) {
-            this.centerPanel.add(new JButton(v.getAmount() + " " + v.getDescription()));
+            JButton b = new JButton(v.getAmount() + " " + v.getDescription());
+            b.addActionListener(new ActionListener()
+            {
+                public Invoice in = v;
+                public void actionPerformed(ActionEvent e) {
+                    showInvoiceDetails(in);
+                }
+            });
+
+            this.centerPanel.add(b);
             this.centerPanel.add(new JLabel(""));
         }
+        System.out.println("here");
+
 
         this.centerPanel.revalidate();
         this.centerPanel.repaint();
+    }
+
+    private void showInvoiceDetails(Invoice i){
+        //show a menu with delete or add that can allow us to add delete or update options.
     }
 
     public void showAddInvoice(){
@@ -74,8 +90,8 @@ public class View implements IView {
 
         this.menuFrame = new JFrame("Simple GUI application");
         // east pannel
-       // label = new JLabel(String.format("Welcome %s:", ((User) this.data).getName()));
-        label = new JLabel("welcome Eilon");
+        label = new JLabel(String.format("Welcome %s:", ((User) this.data).getName()));
+        //label = new JLabel("welcome Eilon");
         WestPanel = new JPanel();
         addInvoice = new JButton("Add invoice");
         deleteInvoice = new JButton("Delete invoice");
@@ -118,6 +134,7 @@ public class View implements IView {
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menuFrame.setSize(400, 400);
         menuFrame.setVisible(true);
+        c.getInvoices((User)this.data);
         this.loadList(((User) this.data).getInvoices());
     }
 
@@ -126,13 +143,17 @@ public class View implements IView {
       JTextField t1 , t2;
       
       frame = new JFrame("Simple GUI application");
-      t1 = new JTextField("please enter id");
-      t2 = new JTextField("please enter password");
+      t1 = new JTextField();
+      t2 = new JTextField();
       this.centerPanel = new JPanel();
-      this.centerPanel.setLayout(new GridLayout(3,1));
+      this.centerPanel.setLayout(new GridLayout(5,1));
       t1.setSize(300, 200);
       t2.setSize(300, 200);
+      JLabel lb1 = new JLabel("please enter id:");
+      JLabel lb2 = new JLabel("please enter password:");
+      this.centerPanel.add(lb1);
       this.centerPanel.add(t1);
+      this.centerPanel.add(lb2);
       this.centerPanel.add(t2);
       this.button = new JButton("Connect");
       this.button.setSize(300, 200);
@@ -177,7 +198,7 @@ public class View implements IView {
 
     public static void main(String args[]) {
         View simpleGUI = new View();
-        simpleGUI.showMenu();
+        simpleGUI.initialize();
     }
 
 }

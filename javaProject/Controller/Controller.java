@@ -19,7 +19,6 @@ public class Controller implements IController {
         HttpClient client;
         HttpRequest request;
         HttpResponse<String> response;
-
         try {
             Json x = Json.object().set("id", id).set("password", password);
 
@@ -34,6 +33,7 @@ public class Controller implements IController {
                 s = new User(u.at("id").asString(), u.at("name").asString(), u.at("password").asString(),
                         u.at("budget").asDouble());
             }
+            
         } catch (Exception e) {
             System.err.println(e.toString());
         } finally {
@@ -46,6 +46,9 @@ public class Controller implements IController {
         HttpClient client;
         HttpRequest request;
         HttpResponse<String> response;
+
+        System.out.println(s.getID());
+
         try {
 
             client = HttpClient.newHttpClient();
@@ -85,6 +88,43 @@ public class Controller implements IController {
             request = HttpRequest.newBuilder()
                     .uri(URI.create("https://invoicing-java-backend.herokuapp.com/invoice/create/"))
                     .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(x.toString())).build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            System.err.println(e.toString());
+        }
+    }
+
+    public void updateInvoice(int id, String description, double amount){
+        HttpClient client;
+        HttpRequest request;
+        HttpResponse<String> response;
+        SimpleDateFormat f = new SimpleDateFormat("YYYY-MM-DD");
+
+        try {
+            Json x = Json.object().set("amount", amount).set("description", description);
+
+            client = HttpClient.newHttpClient();
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://invoicing-java-backend.herokuapp.com/invoice/update/"+id)
+                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.ofString(x.toString())).build();
+            response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        } catch (Exception e) {
+            System.err.println(e.toString());
+        }
+    }
+
+    
+    public void deleteInvoice(int id){
+        HttpClient client;
+        HttpRequest request;
+        HttpResponse<String> response;
+        SimpleDateFormat f = new SimpleDateFormat("YYYY-MM-DD");
+
+        try {
+            client = HttpClient.newHttpClient();
+            request = HttpRequest.newBuilder()
+                    .uri(URI.create("https://invoicing-java-backend.herokuapp.com/invoice/delete/"+id)
+                    .header("Content-Type", "application/json").POST(HttpRequest.BodyPublishers.noBody()).build();
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
         } catch (Exception e) {
             System.err.println(e.toString());

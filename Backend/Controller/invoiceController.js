@@ -1,5 +1,5 @@
 
-const con = new (require('../Database/connector'))();
+const con = require('../Database/connector');
 const ErrHandler = require('../Utills/errorHandler');
 
 class InvoiceController {
@@ -19,7 +19,7 @@ class InvoiceController {
     static async read(req, res) {
         try {
             const query = `SELECT * FROM Invoice AND id = ?;`;
-            const data = await con.getData(query, [req.params.id]);
+            const data = await con.query(query, [req.params.id]);
             if (data.errno) {
                 throw {
                     'status': 500,
@@ -35,7 +35,7 @@ class InvoiceController {
     static async readAll(req, res) {
         try {
             const query = `SELECT * FROM Invoice WHERE UserID = ?;`;
-            const data = await con.getData(query, [req.params.UserID]);
+            const data = await con.query(query, [req.params.UserID]);
             if (data.errno) {
                 throw {
                     'status': 500,
@@ -51,7 +51,7 @@ class InvoiceController {
     static async selectstar(req, res) {
         try {
             const query = `SELECT * FROM Invoice;`;
-            const data = await con.getData(query);
+            const data = await con.query(query);
             if (data.errno) {
                 throw {
                     'status': 500,

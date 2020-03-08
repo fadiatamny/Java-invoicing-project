@@ -1,24 +1,9 @@
-const sqlite = require('sqlite3');
+const mysql = require('mysql');
 
 class Connector {
-    constructor(fileName = process.env.SQLITE_FILE || "./database.sqlite") {
-        this.db = new sqlite.Database(fileName, (err) => {
-            if (err) {
-                throw {
-                    'status': 500,
-                    'message': 'Error performing connection',
-                    'err': err
-                };
-            } else {
-                this.createTables();
-            }
-        });
 
-        this.db.configure("busyTimeout", 1000);
-    }
-
-    createTables() {
-        this.db.run(
+    static async initiate(){
+        await Connector.query(
             "CREATE TABLE IF NOT EXISTS `Users` (\
             `id` varchar(64) UNIQUE PRIMARY KEY,\
             `name` varchar(256),\
@@ -26,9 +11,9 @@ class Connector {
             `budget` INTEGER\
             )"
         );
-        this.db.run(
+        await Connector.query(
             "CREATE TABLE IF NOT EXISTS `Invoice` (\
-            `id` INTEGER PRIMARY KEY AUTOINCREMENT,\
+            `id` INTEGER PRIMARY KEY AUTO_INCREMENT,\
             `UserID` varchar(64),\
             `amount` INTEGER,\
             `description` varchar(256),\
@@ -38,34 +23,27 @@ class Connector {
         );
     }
 
-    async getData(sql, params) {
-        return new Promise((resolve, reject) => {
-            this.db.serialize(() => {
-                this.db.all(sql, params, (err, rows) => {
-                    if (err) {
-                        reject(err);
-                        return;
-                    }
-                    if (rows) {
-                        resolve(rows);
-                        return;
-                    }
-                });
-            })
+    static _connect() {
+        return mysql.createConnection({
+            host: process.env.APPSETTING_MYSQL_HOST,
+            user: process.env.APPSETTING_MYSQL_USER,
+            password: process.env.APPSETTING_MYSQL_PASSWORD,
+            database: process.env.APPSETTING_MYSQL_DB
         });
-    }
+    };
 
-    async query(sql, params) {
+    static async query(sql, args) {
+        let con = Connector._connect();
+
         return new Promise((resolve, reject) => {
-            this.db.run(sql, params, (err) => {
-                if (err)
-                    reject(err);
-                else
-                    resolve(undefined)
+            /* Connect to the database */
+            con.query(sql, args, (err, rows) => {
+                con.destroy();
+                if (err) return reject(err);
+                resolve(rows);
             });
         });
     }
-
-}
+};
 
 module.exports = Connector;
