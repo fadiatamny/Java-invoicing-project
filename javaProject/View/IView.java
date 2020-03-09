@@ -1,11 +1,6 @@
 package View;
-import Model.*;
-
-import java.awt.event.ActionEvent;
 
 public interface IView {
-    public void initialize();
-    public void update(User obj, ActionEvent actionEvent);
-    public void viewDetails(User obj);
-    public void updateBudget(double budget);
+    public void loginMenu();
+    public void mainMenu();
 }

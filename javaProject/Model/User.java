@@ -1,7 +1,6 @@
 package Model;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class User implements IModel {
@@ -50,6 +49,10 @@ public class User implements IModel {
 
     Invoice selectInvoice(int i){
         return this._invoices.get(i);
+    }
+
+    public void dumpList(){
+        this._invoices.clear();
     }
 
     public void insertInvoice(Invoice v){

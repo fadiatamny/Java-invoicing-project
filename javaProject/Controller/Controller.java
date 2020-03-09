@@ -50,7 +50,7 @@ public class Controller implements IController {
         System.out.println(s.getID());
 
         try {
-
+            s.dumpList();
             client = HttpClient.newHttpClient();
 
             request = HttpRequest.newBuilder()
@@ -62,10 +62,9 @@ public class Controller implements IController {
             if (response.body().length() != 0 && !response.body().equals("[]")) {
                 Json y = Json.read(response.body());
                 List<Json> i = y.asJsonList();
-                SimpleDateFormat d = new SimpleDateFormat("YYYY-MM-DD");
                 for (Json obj : i) {
                     s.insertInvoice(new Invoice(obj.at("id").asInteger(), obj.at("amount").asDouble(),
-                            obj.at("description").asString(), d.parse(obj.at("date").asString())));
+                            obj.at("description").asString(), obj.at("date").asString()));
                 }
             }
         } catch (Exception e) {
@@ -74,15 +73,14 @@ public class Controller implements IController {
     }
 
     @Override
-    public void insertInvoice(String userID, double amount, String description, Date date) {
+    public void insertInvoice(String userID, double amount, String description, String date) {
         HttpClient client;
         HttpRequest request;
         HttpResponse<String> response;
-        SimpleDateFormat f = new SimpleDateFormat("YYYY-MM-DD");
 
         try {
             Json x = Json.object().set("amount", amount).set("description", description).set("UserID", userID)
-                    .set("date", f.format(date));
+                    .set("date", date);
 
             client = HttpClient.newHttpClient();
             request = HttpRequest.newBuilder()

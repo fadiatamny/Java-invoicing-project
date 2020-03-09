@@ -5,6 +5,7 @@ const ErrHandler = require('../Utills/errorHandler');
 class InvoiceController {
     static async create(req, res) {
         try {
+            console.log(req.body.date);
             if (!req.body.UserID || !req.body.amount || !req.body.description || !req.body.date)
                 throw { status: 403, message: 'Missing Variables' };
             const query = `INSERT INTO Invoice (UserID, amount, description, date) VALUES (?, ?, ?, ?);`;
