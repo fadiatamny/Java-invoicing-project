@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User implements IModel {
-    private String _id;
+    private final String _id;
     private String _name;
     private String _password;
     private double _budget = 0;
-    private List<Invoice> _invoices;
+    private final List<Invoice> _invoices;
 
-
-    public User(String id, String name, String password, double budget) {
+    public User(final String id, final String name, final String password, final double budget) {
         this._id = id;
         this._name = name;
         this._password = password;
@@ -23,11 +22,11 @@ public class User implements IModel {
         return this._name;
     }
 
-    public String getID(){
+    public String getID() {
         return this._id;
     }
 
-    public void setName(String name) {
+    public void setName(final String name) {
         this._name = name;
     }
 
@@ -35,7 +34,7 @@ public class User implements IModel {
         return this._password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword(final String password) {
         this._password = password;
     }
 
@@ -43,19 +42,15 @@ public class User implements IModel {
         return this._budget;
     }
 
-    public void setBudget(double budget) {
+    public void setBudget(final double budget) {
         this._budget = budget;
     }
 
-    Invoice selectInvoice(int i){
-        return this._invoices.get(i);
-    }
-
-    public void dumpList(){
+    public void dumpList() {
         this._invoices.clear();
     }
 
-    public void insertInvoice(Invoice v){
+    public void insertInvoice(final Invoice v) {
         this._invoices.add(v);
     }
 
@@ -63,11 +58,10 @@ public class User implements IModel {
         return this._invoices;
     }
 
-    public double getCurrent(){
+    public double getCurrent() {
         double sum = 0;
 
-        for(Invoice v : this._invoices)
-        {
+        for (final Invoice v : this._invoices) {
             sum += v.getAmount();
         }
         return sum;

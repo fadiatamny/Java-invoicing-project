@@ -6,7 +6,7 @@ public class Invoice implements IModel {
     private String _description;
     private String _date;
 
-    public Invoice(int _id, double _amount, String _description, String _date) {
+    public Invoice(final int _id, final double _amount, final String _description, final String _date) {
         this._id = _id;
         this._amount = _amount;
         this._description = _description;
@@ -29,19 +29,19 @@ public class Invoice implements IModel {
         return _date;
     }
 
-    public void setID(int id) {
+    public void setID(final int id) {
         this._id = id;
     }
 
-    public void setAmount(double amount) {
+    public void setAmount(final double amount) {
         this._amount = amount;
     }
 
-    public void setDescription(String description) {
+    public void setDescription(final String description) {
         this._description = description;
     }
 
-    public void setDate(String date) {
+    public void setDate(final String date) {
         this._date = date;
     }
 

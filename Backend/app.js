@@ -4,8 +4,10 @@ const morgan = require('morgan');
 const chalk = require('chalk');
 const apiRouter = require('./Router/apiRouter');
 const invoiceRouter = require('./Router/invoiceRouter');
-const con = require('./Database/connector').initiate();
+const con = require('./Database/connector');
 const app = express();
+
+con.initiate();
 
 app.use(express.json());
 app.use(express.urlencoded({

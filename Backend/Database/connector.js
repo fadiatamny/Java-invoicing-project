@@ -1,21 +1,20 @@
 const mysql = require('mysql');
 
 class Connector {
-
     static async initiate(){
         await Connector.query(
             "CREATE TABLE IF NOT EXISTS `Users` (\
             `id` varchar(64) UNIQUE PRIMARY KEY,\
             `name` varchar(256),\
             `password` varchar(256),\
-            `budget` INTEGER\
+            `budget` DOUBLE\
             )"
         );
         await Connector.query(
             "CREATE TABLE IF NOT EXISTS `Invoice` (\
             `id` INTEGER PRIMARY KEY AUTO_INCREMENT,\
             `UserID` varchar(64),\
-            `amount` INTEGER,\
+            `amount` DOUBLE,\
             `description` varchar(256),\
             `date` DATE NOT NULL,\
             FOREIGN KEY (`UserID`) REFERENCES `Users`(`id`)\
