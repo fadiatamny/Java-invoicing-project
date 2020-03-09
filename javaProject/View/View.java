@@ -64,12 +64,12 @@ public class View implements IView {
         final JButton btnUpdate = new JButton("Update");
 
         // set sizes to the textfields
-        idLabel.setBounds(10, 200, 100, 25);
-        idHolder.setBounds(100, 200, 100, 25);
-        amountLabel.setBounds(10, 230, 100, 25);
-        textAmount.setBounds(100, 230, 100, 25);
-        descriptionLabel.setBounds(10, 250, 100, 25);
-        textDescription.setBounds(100, 250, 100, 25);
+        idLabel.setBounds(305, 200, 100, 25);
+        idHolder.setBounds(385, 200, 100, 25);
+        amountLabel.setBounds(305, 240, 100, 25);
+        textAmount.setBounds(385, 240, 100, 25);
+        descriptionLabel.setBounds(305, 260, 100, 25);
+        textDescription.setBounds(385, 260, 100, 25);
         current.setBounds(150, 220, 100, 25);
         btnAdd.setBounds(255, 300, 100, 25);
         btnUpdate.setBounds(375, 300, 100, 25);
