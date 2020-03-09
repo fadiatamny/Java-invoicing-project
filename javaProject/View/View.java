@@ -20,7 +20,7 @@ public class View implements IView {
     private JTable table;
     private JTextField textAmount;
     private JTextField textDescription;
-    private JLabel id;
+    private JLabel idHolder;
 
     public View() {
         this.c = new Controller();
@@ -44,9 +44,13 @@ public class View implements IView {
         this.table.setRowHeight(30);
 
         // create JTextFields
+        JLabel idLabel = new JLabel("id:");
+        idHolder = new JLabel("holder");
+        JLabel amountLabel = new JLabel("Amount:");
+        JLabel descriptionLabel = new JLabel("Description:");
+
         this.textAmount = new JTextField();
         this.textDescription = new JTextField();
-        this.id = new JLabel("id:");
 
         // create labels
         final JLabel current = new JLabel("Current:");
@@ -60,13 +64,16 @@ public class View implements IView {
         final JButton btnUpdate = new JButton("Update");
 
         // set sizes to the textfields
-
-        textAmount.setBounds(20, 220, 100, 25);
-        textDescription.setBounds(20, 250, 100, 25);
+        idLabel.setBounds(10, 200, 100, 25);
+        idHolder.setBounds(100, 200, 100, 25);
+        amountLabel.setBounds(10, 230, 100, 25);
+        textAmount.setBounds(100, 230, 100, 25);
+        descriptionLabel.setBounds(10, 250, 100, 25);
+        textDescription.setBounds(100, 250, 100, 25);
         current.setBounds(150, 220, 100, 25);
-        btnAdd.setBounds(150, 220, 100, 25);
-        btnUpdate.setBounds(150, 265, 100, 25);
-        btnDelete.setBounds(150, 310, 100, 25);
+        btnAdd.setBounds(300, 265, 100, 25);
+        btnUpdate.setBounds(450, 265, 100, 25);
+        btnDelete.setBounds(600, 265, 100, 25);
 
         // create JScrollPane
         final JScrollPane pane = new JScrollPane(this.table);
@@ -75,7 +82,11 @@ public class View implements IView {
         menuFrame.add(pane);
 
         // add JTextFields to the jframe
-        menuFrame.add(this.id);
+        menuFrame.add(idLabel);
+        menuFrame.add(amountLabel);
+        menuFrame.add(descriptionLabel);
+
+        menuFrame.add(this.idHolder);
         menuFrame.add(this.textAmount);
         menuFrame.add(this.textDescription);
 
@@ -133,7 +144,7 @@ public class View implements IView {
      * @param btnDelete Button for deleting a new invoice
      */
     private void buttonActions(final JButton btnAdd, final JButton btnUpdate, final JButton btnDelete) {
-    
+
         btnAdd.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(final ActionEvent e) {
@@ -141,7 +152,7 @@ public class View implements IView {
                     @Override
                     public void run() {
                         String s = String.format("%s-%s-%s", Calendar.getInstance().get(Calendar.YEAR),
-                                Calendar.getInstance().get(Calendar.MONTH)+1,
+                                Calendar.getInstance().get(Calendar.MONTH) + 1,
                                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 
                         c.insertInvoice(((User) data).getID(), Double.parseDouble(textAmount.getText()),
@@ -160,7 +171,7 @@ public class View implements IView {
                     @Override
                     public void run() {
                         String s = String.format("%s-%s-%s", Calendar.getInstance().get(Calendar.YEAR),
-                                Calendar.getInstance().get(Calendar.MONTH)+1,
+                                Calendar.getInstance().get(Calendar.MONTH) + 1,
                                 Calendar.getInstance().get(Calendar.DAY_OF_MONTH));
 
                         c.insertInvoice(((User) data).getID(), Double.parseDouble(textAmount.getText()),
