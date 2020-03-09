@@ -19,6 +19,10 @@ public class View implements IView {
     private JTextField textDescription;
     private JLabel idHolder, current;
 
+    
+    /** 
+     * @return 
+     */
     public View() {
         this.c = new Controller();
     }
@@ -321,6 +325,10 @@ public class View implements IView {
         frame.setVisible(true);
     }
 
+    
+    /** 
+     * @param args[]
+     */
     public static void main(final String args[]) {
         final View simpleGUI = new View();
         simpleGUI.loginMenu();

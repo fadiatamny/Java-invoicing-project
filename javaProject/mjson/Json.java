@@ -426,6 +426,10 @@ public class Json implements java.io.Serializable, Iterable<Json>
     	//Json generate(Json options);
     }
 
+	
+	/** 
+	 * @return Iterator<Json>
+	 */
 	@Override
 	public Iterator<Json> iterator() 
 	{
@@ -440,7 +444,12 @@ public class Json implements java.io.Serializable, Iterable<Json>
 		};
 	}
 
-    static String fetchContent(URL url)
+    
+	/** 
+	 * @param url
+	 * @return String
+	 */
+	static String fetchContent(URL url)
     {
     	java.io.Reader reader = null;
     	try
@@ -462,7 +471,13 @@ public class Json implements java.io.Serializable, Iterable<Json>
         }
     }
     
-    static Json resolvePointer(String pointerRepresentation, Json top)
+    
+	/** 
+	 * @param pointerRepresentation
+	 * @param top
+	 * @return Json
+	 */
+	static Json resolvePointer(String pointerRepresentation, Json top)
     {
     	String [] parts = pointerRepresentation.split("/");
     	Json result = top;
@@ -483,7 +498,14 @@ public class Json implements java.io.Serializable, Iterable<Json>
     	return result;
     }
     
-    static URI makeAbsolute(URI base, String ref) throws Exception
+    
+	/** 
+	 * @param base
+	 * @param ref
+	 * @return URI
+	 * @throws Exception
+	 */
+	static URI makeAbsolute(URI base, String ref) throws Exception
     {
     	URI refuri;
     	if (base != null && base.getAuthority() != null && !new URI(ref).isAbsolute())
@@ -511,7 +533,18 @@ public class Json implements java.io.Serializable, Iterable<Json>
    		return refuri;
     }
     
-    static Json resolveRef(URI base, 
+    
+	/** 
+	 * @param base
+	 * @param refdoc
+	 * @param refuri
+	 * @param resolved
+	 * @param expanded
+	 * @param uriResolver
+	 * @return Json
+	 * @throws Exception
+	 */
+	static Json resolveRef(URI base, 
     					   Json refdoc, 
     					   URI refuri,  
     					   Map<String, Json> resolved, 
@@ -1102,23 +1135,45 @@ public class Json implements java.io.Serializable, Iterable<Json>
     	}
     }
     
-    public static Schema schema(Json S)
+    
+	/** 
+	 * @param S
+	 * @return Schema
+	 */
+	public static Schema schema(Json S)
     {
     	return new DefaultSchema(null, S, null);
     }
     
-    public static Schema schema(URI uri)
+    
+	/** 
+	 * @param uri
+	 * @return Schema
+	 */
+	public static Schema schema(URI uri)
     {
     	return schema(uri, null);
     }
     
-    public static Schema schema(URI uri, Function<URI, Json> relativeReferenceResolver)
+    
+	/** 
+	 * @param uri
+	 * @param relativeReferenceResolver
+	 * @return Schema
+	 */
+	public static Schema schema(URI uri, Function<URI, Json> relativeReferenceResolver)
     {
     	try { return new DefaultSchema(uri, Json.read(Json.fetchContent(uri.toURL())), relativeReferenceResolver); }
     	catch (Exception ex) { throw new RuntimeException(ex); }    	
     }
     
-    public static Schema schema(Json S, URI uri)
+    
+	/** 
+	 * @param S
+	 * @param uri
+	 * @return Schema
+	 */
+	public static Schema schema(Json S, URI uri)
     {
     	return new DefaultSchema(uri, S, null);
     }
@@ -1394,7 +1449,19 @@ public class Json implements java.io.Serializable, Iterable<Json>
 
 	Json enclosing = null;
 	
+	
+	/** 
+	 * @param property
+	 * @param def
+	 * @return 
+	 */
 	protected Json() { }
+	
+	/** 
+	 * @param property
+	 * @param def
+	 * @return 
+	 */
 	protected Json(Json enclosing) { this.enclosing = enclosing; }
 	
 	/**
@@ -3001,6 +3068,10 @@ public class Json implements java.io.Serializable, Iterable<Json>
 	        return (char) value;
 	    }
 	}
+	
+	/** 
+	 * @param []argv
+	 */
 	// END Reader
 
     public static void main(String []argv)
