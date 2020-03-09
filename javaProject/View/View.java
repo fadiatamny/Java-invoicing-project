@@ -206,7 +206,7 @@ public class View implements IView {
             }
             else
             {
-                logger.info("Add row faild"); 
+                logger.info("Add ivoice faild"); 
             }
         });
 
@@ -215,7 +215,6 @@ public class View implements IView {
                 new Thread() {
                     @Override
                     public void run() {
-                        final int i = table.getSelectedRow();
                         c.deleteInvoice(Integer.parseInt(idHolder.getText()));
                         cleanSelection();
                         loadList();
@@ -223,6 +222,10 @@ public class View implements IView {
                             "\n " + "His budget is: " + ((User) data).getBudget()+"$");
                     }
                 }.start();
+            else
+            {
+                logger.info("Delete invoice faild"); 
+            }    
         });
         btnClear.addActionListener(e -> cleanSelection());
     }
@@ -263,6 +266,9 @@ public class View implements IView {
             else{
                 logger.info("Login faild"); 
             }
+        });
+        signUpButton.addActionListener(e -> {
+            frame.setVisible(false);
         });
         signUpButton.addActionListener(e -> signUpWindow());
         frame.add(panel);
