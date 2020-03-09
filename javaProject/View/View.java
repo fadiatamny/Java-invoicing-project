@@ -8,6 +8,7 @@ import java.awt.event.*;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.util.Calendar;
+import java.util.logging.*;
 
 public class View implements IView {
 
@@ -18,6 +19,7 @@ public class View implements IView {
     private JTextField textAmount;
     private JTextField textDescription;
     private JLabel idHolder, current;
+    private Logger logger;
 
     
     /** 
@@ -31,7 +33,10 @@ public class View implements IView {
      * Function for showing the main menu of the programm
      */
     @Override
-    public void mainMenu() {
+    public void mainMenu()
+    {
+
+        logger = Logger.getLogger("");
         this.menuFrame = new JFrame("Invoice Manager");
         this.table = new JTable();
 
@@ -121,6 +126,8 @@ public class View implements IView {
         menuFrame.setLocationRelativeTo(null);
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menuFrame.setVisible(true);
+        logger.info("Login of " + ((User) this.data).getName() + " Succeeded. " + " \n" + " His current expend is: " + (((User) this.data).getBudget() - ((User) this.data).getCurrent())+ "$" + 
+        "\n " + "His budget is: " + ((User) this.data).getBudget()+"$");
     }
 
     /**
@@ -172,7 +179,7 @@ public class View implements IView {
      * @param btnDelete Button for deleting a new invoice
      */
     private void buttonActions(final JButton btnAdd, final JButton btnClear, final JButton btnDelete) {
-
+        logger = Logger.getLogger("");
         btnAdd.addActionListener(e -> {
             if (!textAmount.getText().equals("") && !textDescription.getText().equals("")) {
                 try {
@@ -188,11 +195,18 @@ public class View implements IView {
                                     textDescription.getText(), s);
                             cleanSelection();
                             loadList();
+                            logger.info("add invoice Succeeded. " + " \n" + " His current expend is: " + (((User) data).getBudget() - ((User) data).getCurrent())+ "$" + 
+                            "\n " + "His budget is: " + ((User) data).getBudget()+"$");
+                            
                         }
                     }.start();
                 } catch (NumberFormatException ex) {
                     System.err.println(ex);
                 }
+            }
+            else
+            {
+                logger.info("Add row faild"); 
             }
         });
 
@@ -201,13 +215,15 @@ public class View implements IView {
                 new Thread() {
                     @Override
                     public void run() {
+                        final int i = table.getSelectedRow();
                         c.deleteInvoice(Integer.parseInt(idHolder.getText()));
                         cleanSelection();
                         loadList();
+                        logger.info("delete invoice Succeeded. " + " \n" + " His current expend is: " + ((((User) data).getBudget() - ((User) data).getCurrent()))+ "$" + 
+                            "\n " + "His budget is: " + ((User) data).getBudget()+"$");
                     }
                 }.start();
         });
-
         btnClear.addActionListener(e -> cleanSelection());
     }
 
@@ -216,6 +232,7 @@ public class View implements IView {
      */
     @Override
     public void loginMenu() {
+        logger = Logger.getLogger("");
         final JFrame frame = new JFrame("Invoice Manager - Login");
         frame.setSize(350, 200);
         final JPanel panel = new JPanel();
@@ -243,6 +260,9 @@ public class View implements IView {
                 frame.setVisible(false);
                 login(userText.getText(), passwordText.getText());
             }
+            else{
+                logger.info("Login faild"); 
+            }
         });
         signUpButton.addActionListener(e -> signUpWindow());
         frame.add(panel);
@@ -267,6 +287,7 @@ public class View implements IView {
      */
     @Override
     public void signUpWindow() {
+        logger = Logger.getLogger("");
         final JFrame frame = new JFrame("Invoice Manager - Sign Up");
         frame.setSize(300, 220);
         final JPanel panel = new JPanel();
@@ -319,6 +340,9 @@ public class View implements IView {
                 } catch (NumberFormatException ex) {
                     System.err.println(ex);
                 }
+            }
+            else{
+                logger.info("Sign Up faild");
             }
         });
         frame.add(panel);
