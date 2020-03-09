@@ -71,9 +71,9 @@ public class View implements IView {
         descriptionLabel.setBounds(10, 250, 100, 25);
         textDescription.setBounds(100, 250, 100, 25);
         current.setBounds(150, 220, 100, 25);
-        btnAdd.setBounds(300, 265, 100, 25);
-        btnUpdate.setBounds(450, 265, 100, 25);
-        btnDelete.setBounds(600, 265, 100, 25);
+        btnAdd.setBounds(255, 300, 100, 25);
+        btnUpdate.setBounds(375, 300, 100, 25);
+        btnDelete.setBounds(495, 300, 100, 25);
 
         // create JScrollPane
         final JScrollPane pane = new JScrollPane(this.table);
