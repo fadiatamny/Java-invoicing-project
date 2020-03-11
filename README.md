@@ -11,6 +11,8 @@ The code sometimes runs a bit slow because of the backend api so please dont wor
 ## HOW TO RUN :
 
 `java -cp ./bin/program.jar View.View`
+
+[Link to see a live demo video](https://streamable.com/blupb)
   
 ## Submittors
 
