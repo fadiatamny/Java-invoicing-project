@@ -21,9 +21,8 @@ public class View implements IView {
     private JLabel idHolder, current;
     private Logger logger;
 
-    
-    /** 
-     * @return 
+    /**
+     * @return
      */
     public View() {
         this.c = new Controller();
@@ -33,8 +32,7 @@ public class View implements IView {
      * Function for showing the main menu of the programm
      */
     @Override
-    public void mainMenu()
-    {
+    public void mainMenu() {
 
         logger = Logger.getLogger("");
         this.menuFrame = new JFrame("Invoice Manager");
@@ -126,8 +124,9 @@ public class View implements IView {
         menuFrame.setLocationRelativeTo(null);
         menuFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         menuFrame.setVisible(true);
-        logger.info("Login of " + ((User) this.data).getName() + " Succeeded. " + " \n" + " His current expend is: " + (((User) this.data).getBudget() - ((User) this.data).getCurrent())+ "$" + 
-        "\n " + "His budget is: " + ((User) this.data).getBudget()+"$");
+        logger.info("Login of " + ((User) this.data).getName() + " Succeeded. " + " \n" + " His current expend is: "
+                + (((User) this.data).getBudget() - ((User) this.data).getCurrent()) + "$" + "\n " + "His budget is: "
+                + ((User) this.data).getBudget() + "$");
     }
 
     /**
@@ -195,18 +194,17 @@ public class View implements IView {
                                     textDescription.getText(), s);
                             cleanSelection();
                             loadList();
-                            logger.info("add invoice Succeeded. " + " \n" + " His current expend is: " + (((User) data).getBudget() - ((User) data).getCurrent())+ "$" + 
-                            "\n " + "His budget is: " + ((User) data).getBudget()+"$");
-                            
+                            logger.info("add invoice Succeeded. " + " \n" + " His current expend is: "
+                                    + (((User) data).getBudget() - ((User) data).getCurrent()) + "$" + "\n "
+                                    + "His budget is: " + ((User) data).getBudget() + "$");
+
                         }
                     }.start();
                 } catch (NumberFormatException ex) {
                     System.err.println(ex);
                 }
-            }
-            else
-            {
-                logger.info("Add ivoice faild"); 
+            } else {
+                logger.info("Add ivoice faild");
             }
         });
 
@@ -218,14 +216,14 @@ public class View implements IView {
                         c.deleteInvoice(Integer.parseInt(idHolder.getText()));
                         cleanSelection();
                         loadList();
-                        logger.info("delete invoice Succeeded. " + " \n" + " His current expend is: " + ((((User) data).getBudget() - ((User) data).getCurrent()))+ "$" + 
-                            "\n " + "His budget is: " + ((User) data).getBudget()+"$");
+                        logger.info("delete invoice Succeeded. " + " \n" + " His current expend is: "
+                                + ((((User) data).getBudget() - ((User) data).getCurrent())) + "$" + "\n "
+                                + "His budget is: " + ((User) data).getBudget() + "$");
                     }
                 }.start();
-            else
-            {
-                logger.info("Delete invoice faild"); 
-            }    
+            else {
+                logger.info("Delete invoice faild");
+            }
         });
         btnClear.addActionListener(e -> cleanSelection());
     }
@@ -262,9 +260,8 @@ public class View implements IView {
             if (!userText.getText().equals("") && !passwordText.getText().equals("")) {
                 frame.setVisible(false);
                 login(userText.getText(), passwordText.getText());
-            }
-            else{
-                logger.info("Login faild"); 
+            } else {
+                logger.info("Login faild");
             }
         });
         signUpButton.addActionListener(e -> {
@@ -339,15 +336,24 @@ public class View implements IView {
                         public void run() {
                             data = c.signUp(userText.getText(), nameText.getText(), passwordText.getText(),
                                     Double.parseDouble(budgetText.getText()));
+
                             frame.setVisible(false);
-                            mainMenu();
+                            System.out.println(data);
+                            if (data != null) {
+                                System.out.println("not null woo");
+                                logger.info("Logged in as " + nameText.getText());
+                                mainMenu();
+                            } else {
+                                logger.info("User " + userText.getText() + " already exists");
+                                loginMenu();
+                            }
+
                         }
                     }.start();
                 } catch (NumberFormatException ex) {
                     System.err.println(ex);
                 }
-            }
-            else{
+            } else {
                 logger.info("Sign Up faild");
             }
         });
@@ -355,8 +361,7 @@ public class View implements IView {
         frame.setVisible(true);
     }
 
-    
-    /** 
+    /**
      * @param args[]
      */
     public static void main(final String args[]) {
