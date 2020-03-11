@@ -151,7 +151,7 @@ public class View implements IView {
     private void loadList() {
         this.cleanTable();
         c.getInvoices((User) this.data);
-        this.current.setText("Budget: " + (((User) this.data).getBudget() - ((User) this.data).getCurrent()));
+        this.current.setText("Current: " + (((User) this.data).getBudget() - ((User) this.data).getCurrent()));
         final List<Invoice> l = ((User) this.data).getInvoices();
         final Object[] row = new Object[4];
         final DefaultTableModel model = new DefaultTableModel();
@@ -340,7 +340,6 @@ public class View implements IView {
                             frame.setVisible(false);
                             System.out.println(data);
                             if (data != null) {
-                                System.out.println("not null woo");
                                 logger.info("Logged in as " + nameText.getText());
                                 mainMenu();
                             } else {
